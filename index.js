@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const { connectDB } = require("./config/db");
 const app = express();
 const port = process.env.PORT || 3000;
+const { ValidationError } = require("express-validation");
 
 /** CONFIGURATION */
 
@@ -18,6 +19,14 @@ app.all("/*", (req, res) => {
     success: false,
     error: "no api found",
   });
+});
+
+app.use(function (err, req, res, next) {
+  if (err instanceof ValidationError) {
+    return res.status(err.statusCode).json(err);
+  }
+
+  return res.status(500).json(err);
 });
 
 connectDB()

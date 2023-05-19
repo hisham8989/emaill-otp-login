@@ -111,7 +111,7 @@ class OtpController {
   accoundBlockVerify = async (req, res, next) => {
     try {
       const { email } = req.body;
-      if (!email) throw "email is required";
+      // if (!email) throw "email is required";
       const user = await userDao.getUserByEmail(email);
       if (!user) throw "user does not exist";
       if (user.accountBlockedAt) {
@@ -129,6 +129,7 @@ class OtpController {
       }
       next();
     } catch (err) {
+      console.log("asdasd", err);
       return res.status(500).json({
         error: err,
       });
